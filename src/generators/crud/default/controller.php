@@ -16,10 +16,6 @@ if ($modelClass === $searchModelClass) {
 
 /* @var $class ActiveRecordInterface */
 $class = $generator->modelClass;
-$pks = $class::primaryKey();
-$urlParams = $generator->generateUrlParams();
-$actionParams = $generator->generateActionParams();
-$actionParamComments = $generator->generateActionParamComments();
 
 echo "<?php\n";
 ?>
@@ -35,7 +31,7 @@ use <?= ltrim($generator->searchModelClass, '\\') . (isset($searchModelAlias) ? 
 
 class <?= $controllerClass ?> extends <?= StringHelper::basename($generator->baseControllerClass) . "\n" ?>
 {
-<?php 
+<?php
     $lastPos = strripos($generator->modelClass,"\\") + 1 ;
     $class = substr($generator->modelClass, $lastPos) . '::class';
 ?>
