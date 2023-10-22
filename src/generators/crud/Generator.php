@@ -3,7 +3,6 @@
 namespace mitirrli\giiRest\generators\crud;
 
 use Yii;
-use yii\db\BaseActiveRecord;
 use yii\db\Schema;
 use yii\gii\CodeFile;
 use yii\helpers\Inflector;
@@ -117,7 +116,7 @@ class Generator extends \yii\gii\Generator
      */
     public function requiredTemplates()
     {
-        return ['controller.php'];
+        return ['app-model.php', 'controller.php'];
     }
 
     /**
@@ -147,54 +146,14 @@ class Generator extends \yii\gii\Generator
     public function generate()
     {
         $this->modelClass = str_replace("Controller", "", str_replace("controllers", "models", $this->controllerClass));
-        $this->writeModelFile($this->modelClass);
 
+        $modelFile = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->modelClass, '\\')) . '.php');
         $controllerFile = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->controllerClass, '\\')) . '.php');
 
-        $files = [
+        return [
+            new CodeFile($modelFile, $this->render('app-model.php')),
             new CodeFile($controllerFile, $this->render('controller.php')),
         ];
-
-        if (!empty($this->searchModelClass)) {
-            $searchModel = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->searchModelClass, '\\') . '.php'));
-            $files[] = new CodeFile($searchModel, $this->render('search.php'));
-        }
-        return $files;
-    }
-
-    protected function writeModelFile($modelClass)
-    {
-        $className = substr($modelClass, strripos($modelClass, "\\") + 1);
-        $namespace = str_replace('\\' . $className, '', $modelClass);
-
-        $backendModelFile = Yii::getAlias('@' . str_replace('\\', '/', ltrim($this->modelClass, '\\')) . '.php');
-        if (!is_file($backendModelFile)) {
-            $content = <<<PHP
-<?php
-
-namespace {$namespace};
-
-class {$className} extends \common\models\\{$className}
-{
-    public function rules()
-    {
-        return array_merge(parent::rules(), []);
-    }
-}
-PHP;
-            $this->writeContentFile($backendModelFile, $content);
-        }
-    }
-
-    protected function writeContentFile($file, $content)
-    {
-        if (file_put_contents($file, $content) === false) {
-            throw new \Exception("Write to '{$file}' error.");
-        }
-
-        $mask = @umask(0);
-        @chmod($file, 0666);
-        @umask($mask);
     }
 
     /**
