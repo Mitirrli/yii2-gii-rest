@@ -206,7 +206,7 @@ class Generator extends \yii\gii\Generator
         $db = $this->getDbConnection();
         foreach ($this->getTableNames() as $tableName) {
             // model :
-            $modelClassName = camelCase($tableName);
+            $modelClassName = ucfirst($this->camelize($tableName));
             $queryClassName = ($this->generateQuery) ? $this->generateQueryClassName($modelClassName) : false;
             $tableSchema = $db->getTableSchema($tableName);
             $params = [
@@ -610,6 +610,12 @@ class Generator extends \yii\gii\Generator
         }
 
         return $relations;
+    }
+
+    protected function camelize($uncamelized_words, $separator = '_')
+    {
+        $uncamelized_words = $separator . str_replace($separator, " ", strtolower($uncamelized_words));
+        return ltrim(str_replace(" ", "", ucwords($uncamelized_words)), $separator);
     }
 
     /**
