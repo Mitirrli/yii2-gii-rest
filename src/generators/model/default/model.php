@@ -11,10 +11,6 @@
 /* @var $rules string[] list of validation rules */
 /* @var $relations array list of relations (name => relation declaration) */
 
-//是否需要软删除
-$softDelete = false;
-if (array_key_exists('deleted_at', $properties)) $softDelete = true;
-
 echo "<?php\n";
 ?>
 
