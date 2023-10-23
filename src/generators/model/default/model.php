@@ -19,11 +19,6 @@ echo "<?php\n";
 ?>
 
 namespace <?= $generator->ns ?>;
-<?php if ($softDelete): ?>
-
-use \yii2tech\ar\softdelete\SoftDeleteBehavior;
-use \yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
-<?php endif; ?>
 
 /**
  * This is the model class for table "<?= $generator->generateTableName($tableName) ?>".
@@ -40,23 +35,6 @@ use \yii2tech\ar\softdelete\SoftDeleteQueryBehavior;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-<?php if ($softDelete): ?>
-    public function behaviors()
-    {
-        return [
-            [
-                'class' => SoftDeleteBehavior::class,
-                'softDeleteAttributeValues' => [
-                    'deleted_at' =>  time(),
-                ],
-                'restoreAttributeValues' => [
-                    'deleted_at' => 0
-                ]
-            ]
-        ];
-    }
-
-<?php endif; ?>
     public static function tableName()
     {
         return '{{%<?= $generator->generateTableName($tableName) ?>}}';
