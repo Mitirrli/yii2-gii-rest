@@ -99,15 +99,4 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
         return new <?= $queryClassFullName ?>(get_called_class());
     }
 <?php endif; ?>
-<?php if ($softDelete): ?>
-
-    public static function find()
-    {
-        $query = parent::find();
-
-        $query->attachBehavior('softDelete', SoftDeleteQueryBehavior::class);
-
-        return $query->notDeleted();
-    }
-<?php endif; ?>
 }
