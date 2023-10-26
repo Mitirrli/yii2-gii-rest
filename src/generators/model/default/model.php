@@ -31,7 +31,7 @@ namespace <?= $generator->ns ?>;
  */
 class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . "\n" ?>
 {
-    public static function tableName()
+    public static function tableName(): string
     {
         return '{{%<?= $generator->generateTableName($tableName) ?>}}';
     }
@@ -46,12 +46,12 @@ class <?= $className ?> extends <?= '\\' . ltrim($generator->baseClass, '\\') . 
     }
 <?php endif; ?>
 
-    public function rules()
+    public function rules(): array
     {
         return [<?= empty($rules) ? '' : ("\n            " . implode(",\n            ", $rules) . ",\n        ") ?>];
     }
 
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
 <?php foreach ($labels as $name => $label): ?>
